@@ -1,138 +1,59 @@
-Notebook LLM Clone
-Notebook LLM Clone is a NotebookLM-style AI learning assistant that lets users upload and process multiple source types such as PDF, text, Markdown, and YouTube content, chat with their sources using RAG, generate learning tools, and manage user memories.
-About the Project
-The project combines document processing, vector search, LLM generation, and memory to create an AI-powered study workspace.
-Core Features
-Authentication and protected workspaces
-Multi-source upload and processing (PDF, text, Markdown, YouTube, etc.)
-Document chunking and embeddings
-Semantic search with Pinecone
-RAG-based chat over uploaded sources
-AI-generated learning tools:
-Summary
-Takeaways
-Flashcards
-Quiz
-Mindmap
-Report
-User memory with Mem0
-Background processing with Inngest
-PDF storage with Cloudinary
-Project Logic
-```text
-User
-  |
-  v
-Next.js Client
-  |
-  v
-Express API
-  |
-  +--> Authentication / Workspace
-  |
-  +--> Source Upload
-  |       |
-  |       v
-  |    Cloudinary
-  |       |
-  |       v
-  |    Inngest
-  |       |
-  |       v
-  |    PDF Text Extraction
-  |       |
-  |       v
-  |    Chunking
-  |       |
-  |       v
-  |    OpenAI Embeddings
-  |       |
-  |       v
-  |    Pinecone
-  |
-  +--> Chat
-  |       |
-  |       v
-  |    Query Embedding -> Pinecone Retrieval
-  |       |
-  |       v
-  |    Relevant Context -> OpenAI -> Answer
-  |
-  +--> Memory
-          |
-          v
-        Mem0
-```
-A source becomes `READY` after its content is extracted, chunked, embedded, and successfully indexed in Pinecone. Only ready sources are used for learning-tool generation.
-Architecture
-```text
-+-----------------------+
-|     Next.js Client    |
-|        :3000          |
-+-----------+-----------+
-            |
-            | HTTP
-            v
-+-----------------------+
-| Express / TypeScript  |
-|        :8080          |
-+-----+-------+------+--+
-      |       |      |
-      v       v      v
- PostgreSQL  Mem0  OpenAI
-      |              |
-      |              v
-      |          Embeddings
-      |              |
-      |              v
-      |           Pinecone
-      |
-      +-- Prisma / Better Auth
+# Notebook LLM Clone
 
-Background processing:
-Express -> Inngest -> PDF processing -> Embeddings -> Pinecone
+Notebook LLM Clone is a NotebookLM-style AI learning assistant that lets users upload and process multiple source types such as **PDF, text, Markdown, and YouTube content**, chat with their sources using RAG, generate learning tools, and manage user memories.
 
-File storage:
-Client -> Express -> Cloudinary
-```
-Tech Stack
-Frontend
-Next.js
-React
-TypeScript
-Tailwind CSS
-shadcn/ui
-Backend
-Node.js
-Express
-TypeScript
-Prisma
-PostgreSQL
-Better Auth
-AI / RAG
-OpenAI
-`text-embedding-3-small`
-Pinecone
-Mem0
-Infrastructure / Services
-Docker
-Inngest
-Cloudinary
-Project Structure
+## 🎯 What This Project Does
+
+Instead of simply reading a document, users can turn their learning material into an interactive AI-powered study workspace.
+
+### Core Features
+
+- 📄 Upload and process multiple source types
+  - PDF
+  - Text
+  - Markdown
+  - YouTube
+  - Other supported sources
+- 💬 Chat with uploaded sources using RAG
+- 🔎 Semantic search using vector embeddings
+- 🧠 Generate AI-powered learning tools
+  - Summary
+  - Takeaways
+  - Flashcards
+  - Quiz
+  - Mindmap
+  - Report
+- 🧠 Store and retrieve user memories using Mem0
+- ⚡ Background source processing using Inngest
+- ☁️ PDF storage using Cloudinary
+- 🔐 Authentication and protected workspaces
+
+---
+
+## ⭐ Key Technical Highlights
+
+### 🧠 Retrieval-Augmented Generation (RAG)
+
+The application does not simply send the user's question directly to the LLM.
+
+It first retrieves relevant information from the user's uploaded sources.
+
 ```text
-notebook-llm-clone/
-├── client/              # Next.js frontend
-├── server/              # Express backend
-│   ├── src/
-│   │   ├── controllers/
-│   │   ├── services/
-│   │   ├── repositories/
-│   │   ├── lib/
-│   │   └── ...
-│   └── prisma/
-├── docker-compose.yml
-└── README.md
-```
+User Question
+      ↓
+Generate Query Embedding
+      ↓
+Pinecone Semantic Search
+      ↓
+Retrieve Relevant Chunks
+      ↓
+Build Context
+      ↓
+LLM
+      ↓
+Context-Aware Answer
+  
+  
 Environment Variables
 Configure the required variables in `server/.env`.
 ```env
