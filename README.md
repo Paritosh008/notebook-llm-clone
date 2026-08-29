@@ -52,25 +52,7 @@ Build Context
 LLM
       ↓
 Context-Aware Answer
-  
-  
-Environment Variables
-Configure the required variables in `server/.env`.
-```env
-DATABASE\_URL=
-OPENAI\_API\_KEY=
 
-PINECONE\_API\_KEY=
-PINECONE\_INDEX=
-
-MEM0\_API\_KEY=
-
-CLOUDINARY\_CLOUD\_NAME=
-CLOUDINARY\_API\_KEY=
-CLOUDINARY\_API\_SECRET=
-CLOUDINARY\_UPLOAD\_PRESET=
-```
-Never commit `.env` or API secrets to GitHub.
 Run the Project
 1. Start Docker
 From the project root:
