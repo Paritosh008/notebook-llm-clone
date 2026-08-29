@@ -53,6 +53,9 @@ LLM
       ↓
 Context-Aware Answer
 
+
+
+```
 Run the Project
 1. Start Docker
 From the project root:
