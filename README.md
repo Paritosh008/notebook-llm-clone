@@ -1,320 +1,113 @@
-Notebook LLM Clone
+# Notebook LLM Clone
 
-Notebook LLM Clone is a NotebookLM-style AI learning assistant that lets users upload and process multiple source types such as PDF, text, Markdown, and YouTube content, chat with their sources using RAG, generate learning tools, and manage user memories.
+Notebook LLM Clone is a NotebookLM-style AI learning assistant that lets users upload and process multiple source types such as **PDF, text, Markdown, and YouTube content**, chat with their sources using RAG, generate learning tools, and manage user memories.
 
-About the Project
+## 🎯 What This Project Does
 
-The project combines document processing, vector search, LLM generation, and memory to create an AI-powered study workspace.
+Instead of simply reading a document, users can turn their learning material into an interactive AI-powered study workspace.
 
-Core Features
+### Core Features
 
-Authentication and protected workspaces
+- 📄 Upload and process multiple source types
+  - PDF
+  - Text
+  - Markdown
+  - YouTube
+  - Other supported sources
+- 💬 Chat with uploaded sources using RAG
+- 🔎 Semantic search using vector embeddings
+- 🧠 Generate AI-powered learning tools
+  - Summary
+  - Takeaways
+  - Flashcards
+  - Quiz
+  - Mindmap
+  - Report
+- 🧠 Store and retrieve user memories using Mem0
+- ⚡ Background source processing using Inngest
+- ☁️ PDF storage using Cloudinary
+- 🔐 Authentication and protected workspaces
 
-Multi-source upload and processing (PDF, text, Markdown, YouTube, etc.)
+---
 
-Document chunking and embeddings
+## ⭐ Key Technical Highlights
 
-Semantic search with Pinecone
+### 🧠 Retrieval-Augmented Generation (RAG)
 
-RAG-based chat over uploaded sources
+The application does not simply send the user's question directly to the LLM.
 
-AI-generated learning tools:
+It first retrieves relevant information from the user's uploaded sources.
 
-Summary
 
-Takeaways
-
-Flashcards
-
-Quiz
-
-Mindmap
-
-Report
-
-User memory with Mem0
-
-Background processing with Inngest
-
-PDF storage with Cloudinary
-
-Project Logic
-
-User
-  |
-  v
+Learning Tool	Purpose
+📄 Summary	Understand the complete material quickly
+💡 Takeaways	Extract important concepts
+🎴 Flashcards	Create revision material
+❓ Quiz	Test understanding
+🗺️ Mindmap	Visualize relationships between concepts
+📑 Report	Generate structured long-form content
+🏗️ Architecture
 Next.js Client
-  |
-  v
+      ↓
 Express API
-  |
-  +--> Authentication / Workspace
-  |
-  +--> Source Upload
-  |       |
-  |       v
-  |    Cloudinary
-  |       |
-  |       v
-  |    Inngest
-  |       |
-  |       v
-  |    PDF Text Extraction
-  |       |
-  |       v
-  |    Chunking
-  |       |
-  |       v
-  |    OpenAI Embeddings
-  |       |
-  |       v
-  |    Pinecone
-  |
-  +--> Chat
-  |       |
-  |       v
-  |    Query Embedding -> Pinecone Retrieval
-  |       |
-  |       v
-  |    Relevant Context -> OpenAI -> Answer
-  |
-  +--> Memory
-          |
-          v
-        Mem0
+      ↓
+PostgreSQL + Prisma
+      │
+      ├── OpenAI
+      ├── Pinecone
+      ├── Mem0
+      ├── Inngest
+      └── Cloudinary
 
-A source becomes READY after its content is extracted, chunked, embedded, and successfully indexed in Pinecone. Only ready sources are used for learning-tool generation.
+      🛠️ Tech Stack
 
-Architecture
+Frontend: Next.js, React, TypeScript, Tailwind CSS, shadcn/ui
 
-+-----------------------+
-|     Next.js Client    |
-|        :3000          |
-+-----------+-----------+
-            |
-            | HTTP
-            v
-+-----------------------+
-| Express / TypeScript  |
-|        :8080          |
-+-----+-------+------+--+
-      |       |      |
-      v       v      v
- PostgreSQL  Mem0  OpenAI
-      |              |
-      |              v
-      |          Embeddings
-      |              |
-      |              v
-      |           Pinecone
-      |
-      +-- Prisma / Better Auth
+Backend: Node.js, Express, TypeScript, Prisma, PostgreSQL, Better Auth
 
-Background processing:
-Express -> Inngest -> PDF processing -> Embeddings -> Pinecone
+AI / RAG: OpenAI, AI SDK, Embeddings, Pinecone, RAG
 
-File storage:
-Client -> Express -> Cloudinary
+Memory: Mem0
 
-Tech Stack
-
-Frontend
-
-Next.js
-
-React
-
-TypeScript
-
-Tailwind CSS
-
-shadcn/ui
-
-Backend
-
-Node.js
-
-Express
-
-TypeScript
-
-Prisma
-
-PostgreSQL
-
-Better Auth
-
-AI / RAG
-
-OpenAI
-
-text-embedding-3-small
-
-Pinecone
-
-Mem0
-
-Infrastructure / Services
-
-Docker
-
-Inngest
-
-Cloudinary
-
-Project Structure
-
+Infrastructure: Docker, Inngest, Cloudinary
+📁 Project Structure
 notebook-llm-clone/
 ├── client/              # Next.js frontend
 ├── server/              # Express backend
-│   ├── src/
-│   │   ├── controllers/
-│   │   ├── services/
-│   │   ├── repositories/
-│   │   ├── lib/
-│   │   └── ...
-│   └── prisma/
 ├── docker-compose.yml
 └── README.md
 
-Environment Variables
-
-Configure the required variables in server/.env.
-
-DATABASE_URL=
-OPENAI_API_KEY=
-
-PINECONE_API_KEY=
-PINECONE_INDEX=
-
-MEM0_API_KEY=
-
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
-CLOUDINARY_UPLOAD_PRESET=
-
-Never commit .env or API secrets to GitHub.
-
-Run the Project
-
+▶️ Run Locally
 1. Start Docker
-
-From the project root:
-
-docker compose up -d
-
+   docker compose up -d
 2. Start Backend
-
-cd server
+   cd server
 npm run dev
-
-Backend:
-
-http://localhost:8080
-
 3. Start Inngest
-
-Open another terminal:
-
-cd server
+   cd server
 npx inngest-cli@latest dev
-
-Inngest dashboard:
-
-http://localhost:8288
-
 4. Start Frontend
-
-Open another terminal:
-
-cd client
+   cd client
 npm run dev
 
-Frontend:
-
-http://localhost:3000
-
-Startup Order
-
-Docker -> Server -> Inngest -> Client
-
-Prisma Client generation is already included in the server development command, so Prisma normally does not need to be run separately every time.
-
-Functional Test
-
-After starting the project:
-
-Open http://localhost:3000
-
+🧪 Functional Test
 Login / create an account
-
 Create a workspace
+Upload a source
+Wait until the source becomes READY
+Ask questions in Chat
+Generate learning tools from Learn
+Test Memory
+🎯 Key Concepts
+Retrieval-Augmented Generation (RAG)
+Vector Database & Semantic Search
+Text Embeddings
+Large Language Models (LLMs)
+AI Memory
+Background Job Processing
+Document Processing
+Structured LLM Output
+📌 Project Status
 
-Upload a PDF from Sources
-
-Wait for processing to complete
-
-Verify the source becomes READY
-
-Open Chat and ask questions about the uploaded document
-
-Open Learn and generate Summary, Takeaways, Flashcards, Quiz, Mindmap, or Report
-
-Open Memory and test adding/updating/deleting memories
-
-Verify RAG answers use information from the uploaded source
-
-RAG Flow
-
-PDF
- |
- v
-Text Extraction
- |
- v
-Chunking
- |
- v
-OpenAI Embeddings
- |
- v
-Pinecone Vector Index
- |
- v
-User Question
- |
- v
-Question Embedding
- |
- v
-Similarity Search
- |
- v
-Relevant Chunks
- |
- v
-LLM Context
- |
- v
-Answer
-
-Key Concepts
-
-RAG: Grounds chat responses in uploaded source content.
-
-Vector Database: Pinecone stores and retrieves document embeddings.
-
-Embeddings: OpenAI converts text into vectors for semantic search.
-
-Inngest: Handles background source-processing jobs.
-
-Mem0: Stores and retrieves user memories.
-
-Cloudinary: Stores uploaded PDF files.
-
-PostgreSQL + Prisma: Stores application data such as users, workspaces, sources, conversations, and artifacts.
-
-License
-
-This project is intended for learning, portfolio, and demonstration purposes.
+✅ Working — Portfolio Project
+    Built to demonstrate practical AI/GenAI engineering concepts and end-to-end LLM application development.  
