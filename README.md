@@ -150,5 +150,7 @@ Inngest: Handles background source-processing jobs.
 Mem0: Stores and retrieves user memories.
 Cloudinary: Stores uploaded PDF files.
 PostgreSQL + Prisma: Stores application data such as users, workspaces, sources, conversations, and artifacts.
+
+```
 License
 This project is intended for learning, portfolio, and demonstration purposes.
