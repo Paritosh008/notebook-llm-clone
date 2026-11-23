@@ -5,7 +5,7 @@
  * Requires `OPENAI_API_KEY` in the environment.
  */
 
-import OpenAI from "openai";
+import { OpenAI } from "openai";
 import {
     CHAT_MODEL,
     EMBEDDING_DIMENSIONS,

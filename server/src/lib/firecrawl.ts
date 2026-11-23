@@ -4,7 +4,7 @@
  * Requires `FIRECRAWL_API_KEY` in the environment.
  */
 
-import Firecrawl from "@mendable/firecrawl-js";
+import { Firecrawl } from "@mendable/firecrawl-js";
 import { ValidationError } from "../types/app-error.js";
 
 /**
